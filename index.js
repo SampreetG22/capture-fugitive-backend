@@ -5,9 +5,11 @@ app.use(cors());
 app.use(express.json());
 const dotenv = require("dotenv").config();
 const port = process.env.PORT || 5000;
-app.listen(3000, () => {
+
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
 let citiesData = [
   { name: "Lihas Nagar", distance: 50 },
   { name: "Narmis City", distance: 40 },
@@ -70,6 +72,11 @@ const clearAllFields = () => {
   ];
 };
 
+// Add a route for the root URL
+app.get("/", (request, response) => {
+  response.send("Welcome to the Cop Assignment Service!");
+});
+
 //ROUTES
 app.get("/getCitiesAndVehicles", (request, response) => {
   try {
@@ -84,6 +91,7 @@ app.get("/getCitiesAndVehicles", (request, response) => {
     response.status(500).send("Internal Server Error");
   }
 });
+
 app.post("/addCityAndVehicle", (request, response) => {
   try {
     const { name, city, vehicle } = request.body;
@@ -122,6 +130,7 @@ app.post("/addCityAndVehicle", (request, response) => {
     response.status(500).send("Internal Server Error");
   }
 });
+
 app.post("/catchFugitive", (request, response) => {
   const randomNumber = Math.floor(Math.random() * 5);
   const fugitiveCity = citiesData[randomNumber].name;
